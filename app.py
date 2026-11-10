@@ -444,7 +444,8 @@ def create_mosaic(image, grid_size, palette_name, tile_style):
         )
         
         # Step 2: Quantize to palette
-        palette = PALETTES[palette_name]
+        # Palettes are defined in RGB, but the pipeline works in OpenCV's BGR order
+        palette = PALETTES[palette_name][:, ::-1].copy()
         quantized_colors, indices = quantize_to_palette(tile_colors, palette)
         
         # Step 3: Generate tiles
